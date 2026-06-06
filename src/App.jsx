@@ -2,6 +2,10 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
+import Register from "./components/Auth/Register";
+import Login from "./components/Auth/Login";
+import OrderHistory from "./components/Orders/OrderHistory";
+import ProductAdmin from "./components/Admin/ProductAdmin";
 
 function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -11,7 +15,12 @@ function App() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-grow">
-        {activeTab === "home" ? <ProductList /> : <Cart />}
+        {activeTab === "home" && <ProductList />}
+        {activeTab === "cart" && <Cart />}
+        {activeTab === "login" && <Login setActiveTab={setActiveTab} />}
+        {activeTab === "register" && <Register setActiveTab={setActiveTab} />}
+        {activeTab === "orders" && <OrderHistory />}
+        {activeTab === "admin" && <ProductAdmin />}
       </main>
 
       <footer className="bg-white border-t border-gray-100 py-10 mt-auto">

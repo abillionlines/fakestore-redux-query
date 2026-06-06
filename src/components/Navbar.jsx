@@ -8,10 +8,15 @@ Navbar
 import React from "react";
 import { useSelector } from "react-redux";
 import { ShoppingCart, Store } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = ({ activeTab, setActiveTab }) => {
   const { items } = useSelector((state) => state.cart);
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+  const { user, logout } = useAuth();
+  const isAdmin = Boolean(
+    user && (user.email === import.meta.env.VITE_ADMIN_EMAIL || user.uid === import.meta.env.VITE_ADMIN_UID),
+  );
 
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
@@ -57,6 +62,40 @@ const Navbar = ({ activeTab, setActiveTab }) => {
                 </span>
               )}
             </button>
+            {isAdmin && (
+              <button onClick={() => setActiveTab("admin")} className="font-semibold text-gray-700">Admin</button>
+            )}
+            {user ? (
+              <>
+                <button
+                  onClick={() => setActiveTab("orders")}
+                  className="font-semibold text-gray-700"
+                >
+                  Orders
+                </button>
+                <button
+                  onClick={logout}
+                  className="font-semibold text-gray-700"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setActiveTab("login")}
+                  className="font-semibold text-gray-700"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => setActiveTab("register")}
+                  className="font-semibold text-gray-700"
+                >
+                  Sign up
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
